@@ -43,5 +43,25 @@ namespace DBConnect.Controllers
             }
             return Ok(result);
         }
+        [HttpGet("GetByID")]
+        public IActionResult Get(Guid id)
+        {
+            var result = _connectToMysql.Users.Find(id);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            var result = _connectToMysql.Users.Find(id);
+            if (result == null)
+                return new JsonResult(NotFound());
+            _connectToMysql.Users.Remove(result);
+            _connectToMysql.SaveChanges();
+            return Ok($"User number {id} has been deleted");
+        }
+
     }
 }
