@@ -7,8 +7,7 @@ using DBConnect.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<BookStoreDatabaseSettings>(
-builder.Configuration.GetSection("BookStoreDatabase"));
+builder.Services.Configure<BookStoreDatabaseSettings>(builder.Configuration.GetSection("BookStoreDatabase"));
 builder.Services.AddSingleton<BooksService>();
 builder.Services.AddControllers().AddFluentValidation(Validate  => Validate.RegisterValidatorsFromAssemblyContaining<UserVal>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

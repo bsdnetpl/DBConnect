@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DBConnect.Controllers
 {
@@ -18,19 +19,18 @@ namespace DBConnect.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser(Users user)
+        [HttpPost]
+        public async Task<ActionResult> AddUsers(Users user)
         {
             var result = await _connectToMysql.Users.FindAsync(user.Id);
-            if(result == null)
+            if (result == null)
             {
                 user.password = _passwordHasher.HashPassword(user, user.password);
-                _connectToMysql.Users.AddAsync(user);
-                _connectToMysql.SaveChangesAsync();
-                return Ok(user);
-
+                _connectToMysql.Users.Add(user);
+                _connectToMysql.SaveChanges();
+                return Ok("User Add correctly !!");
             }
-            return StatusCode(401, "User in this Id exist");
+            return NoContent();
 
         }
         [HttpGet]
